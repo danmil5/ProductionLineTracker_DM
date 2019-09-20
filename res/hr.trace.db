@@ -1,0 +1,30 @@
+2019-09-20 13:13:23 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT" not found; SQL statement:
+INSERT INTO PRODUCT(type, manufacturer, name) VALUES ( 'AUDIO', 'Apple', 'iPod' ); [42102-199]
+2019-09-20 13:13:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT" not found; SQL statement:
+INSERT INTO PRODUCT(type, manufacturer, name) VALUES ( 'AUDIO', 'Apple', 'iPod' ); [42102-199]
+2019-09-20 13:18:20 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT" not found; SQL statement:
+INSERT INTO PRODUCT(type, manufacturer, name) VALUES ( 'AUDIO', 'Apple', 'iPod' ); [42102-199]
+2019-09-20 13:22:33 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT" not found; SQL statement:
+INSERT INTO PRODUCT(type, manufacturer, name) VALUES ( 'AUDIO', 'Apple', 'iPod' ); [42102-199]
+2019-09-20 13:26:39 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT" not found; SQL statement:
+INSERT INTO PRODUCT (type, manufacturer, name) VALUES ( 'AUDIO', 'Apple', 'iPod' ); [42102-199]
+2019-09-20 13:26:55 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT" not found; SQL statement:
+INSERT INTO Product (type, manufacturer, name) VALUES ( 'AUDIO', 'Apple', 'iPod' ); [42102-199]
+2019-09-20 13:27:16 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT" not found; SQL statement:
+INSERT INTO Product (type, manufacturer, name) VALUES ( 'AUDIO', 'Apple', 'iPod' ) [42102-199]
+2019-09-20 13:27:54 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT" not found; SQL statement:
+INSERT INTO Product (type, manufacturer, name) VALUES ( 'AUDIO', 'Apple', 'iPod' ) [42102-199]
+2019-09-20 13:29:12 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT" not found; SQL statement:
+INSERT INTO Product (type, manufacturer, name) VALUES ( 'AUDIO', 'Apple', 'iPod' ) [42102-199]
+2019-09-20 13:29:22 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT" not found; SQL statement:
+INSERT INTO Product (type, manufacturer, name) VALUES ( 'AUDIO', 'Apple', 'iPod' ) [42102-199]
