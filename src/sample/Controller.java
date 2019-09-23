@@ -24,8 +24,8 @@ public class Controller {
     for (int i = 1; i <= 10; i++) {
       cboQuantity.getItems().add(i);
     }
-    cboQuantity.getSelectionModel().selectFirst();
     cboQuantity.setEditable(true);
+    cboQuantity.getSelectionModel().selectFirst();
     try {
       Class.forName(JDBC_DRIVER);
     } catch (ClassNotFoundException e) {
