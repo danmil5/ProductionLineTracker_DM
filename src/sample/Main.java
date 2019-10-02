@@ -8,6 +8,11 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+  /**
+   *
+   * @param primaryStage
+   * start method only serves to call primaryStage and set the scene for the project GUI
+   */
   @Override
   public void start(Stage primaryStage) throws Exception {
     Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
