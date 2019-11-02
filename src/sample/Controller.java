@@ -20,28 +20,29 @@ public class Controller {
   @FXML private TableColumn<?, ?> colWidgets;
   @FXML private TableView<Product> tblProducts;
   /**
-   * Two text boxes serve to take user input and (on button click) create a new database entry
-   * with this information
+   * Two text boxes serve to take user input and (on button click) create a new database entry with
+   * this information
    */
   @FXML private TextField txtName;
+
   @FXML private TextField txtManufacturer;
-  /**
-   * Run Java database driver and prepare connection to the database "prodDB"
-   */
+  /** Run Java database driver and prepare connection to the database "prodDB" */
   final String JDBC_DRIVER = "org.h2.Driver";
+
   final String DB_URL = "jdbc:h2:./res/prodDB";
   Statement stmt = null;
   Connection conn = null;
   String sql;
 
   /**
-   * Observable list used to populate the table in Product Line and thus populate the listview in the Produce tab
+   * Observable list used to populate the table in Product Line and thus populate the listview in
+   * the Produce tab
    */
   ObservableList<Product> products = FXCollections.observableArrayList();
 
   /**
-   * Initialize method fills quantity combobox with 1-10 values and connects to the "prodDB" database
-   * 11/2/19 and fills type combobox with valid type options from the enum ItemType
+   * Initialize method fills quantity combobox with 1-10 values and connects to the "prodDB"
+   * database 11/2/19 and fills type combobox with valid type options from the enum ItemType
    */
   public void initialize() {
     colWidgets.setCellValueFactory(new PropertyValueFactory("name"));
@@ -90,12 +91,16 @@ public class Controller {
   }
 
   public void AddProduct() {
-    Product pr = new Widget(txtName.getText(), txtManufacturer.getText(), choType.getValue());
+    Product pr =
+        new Widget(
+            txtName.getText(), txtManufacturer.getText(), String.valueOf(choType.getValue()));
     products.add(pr);
 
     try {
       sql =
-          "INSERT INTO PRODUCT (type, manufacturer, name) VALUES ( '"+pr.getType()+"', '"
+          "INSERT INTO PRODUCT (type, manufacturer, name) VALUES ( '"
+              + pr.getType()
+              + "', '"
               + pr.getManufacturer()
               + "', '"
               + pr.getName()

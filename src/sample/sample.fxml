@@ -41,11 +41,13 @@
                                 <TextField fx:id="txtName" GridPane.columnIndex="1"/>
                                 <TextField fx:id="txtManufacturer" GridPane.columnIndex="1"
                                            GridPane.rowIndex="1"/>
-                                <ChoiceBox fx:id="choType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                <ChoiceBox fx:id="choType" prefWidth="150.0" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="2"/>
                             </children>
                         </GridPane>
                         <Label layoutX="395.0" layoutY="30.0" text="Existing Products:"/>
-                        <TableView fx:id="tblProducts" layoutX="367.0" layoutY="70.0" prefHeight="200.0" prefWidth="149.0">
+                        <TableView fx:id="tblProducts" layoutX="367.0" layoutY="70.0" prefHeight="200.0"
+                                   prefWidth="149.0">
                             <columns>
                                 <TableColumn prefWidth="75.0" text="Type 1"/>
                                 <TableColumn fx:id="colWidgets" prefWidth="75.0" text="Widgets"/>
