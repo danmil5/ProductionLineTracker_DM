@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -34,11 +35,18 @@ public class Controller {
   String sql;
 
   /**
+   * Observable list used to populate the table in Product Line and thus populate the listview in the Produce tab
+   */
+  ObservableList<Product> products = FXCollections.observableArrayList();
+
+  /**
    * Initialize method fills quantity combobox with 1-10 values and connects to the "prodDB" database
    * 11/2/19 and fills type combobox with valid type options from the enum ItemType
    */
   public void initialize() {
-    ObservableList<Widget> widgets = FXCollections.observableArrayList();
+    colWidgets.setCellValueFactory(new PropertyValueFactory("name"));
+    tblProducts.setItems(products);
+
     for (int i = 1; i <= 10; i++) {
       cboQuantity.getItems().add(i);
     }
@@ -82,12 +90,15 @@ public class Controller {
   }
 
   public void AddProduct() {
+    Product pr = new Widget(txtName.getText(), txtManufacturer.getText(), choType.getValue());
+    products.add(pr);
+
     try {
       sql =
-          "INSERT INTO PRODUCT (type, manufacturer, name) VALUES ( '"+choType.getValue()+"', '"
-              + txtManufacturer.getText()
+          "INSERT INTO PRODUCT (type, manufacturer, name) VALUES ( '"+pr.getType()+"', '"
+              + pr.getManufacturer()
               + "', '"
-              + txtName.getText()
+              + pr.getName()
               + "' )";
       try {
         stmt.execute(sql);

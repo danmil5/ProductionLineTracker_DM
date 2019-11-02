@@ -2,21 +2,21 @@ package sample;
 
 public abstract class Product implements Item {
     int id;
-    String type;
+    ItemType type;
     String manufacturer;
     String name;
 
-    Product(String n, String m, String t) {
+    Product(String n, String m, ItemType t) {
         this.name = n;
         this.manufacturer = m;
         this.type = t;
     }
 
-    public void setType(String t) {
+    public void setType(ItemType t) {
         this.type = t;
     }
 
-    public String getType() {
+    public ItemType getType() {
         return type;
     }
 
