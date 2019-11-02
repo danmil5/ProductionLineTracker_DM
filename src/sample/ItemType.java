@@ -1,5 +1,8 @@
 package sample;
 
+/**
+ * Create list of available item types for the user to choose from
+ */
 public enum ItemType {
 
     AUDIO("AU"),

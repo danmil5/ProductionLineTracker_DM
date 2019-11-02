@@ -45,10 +45,10 @@
                             </children>
                         </GridPane>
                         <Label layoutX="395.0" layoutY="30.0" text="Existing Products:"/>
-                        <TableView layoutX="367.0" layoutY="70.0" prefHeight="200.0" prefWidth="149.0">
+                        <TableView fx:id="tblProducts" layoutX="367.0" layoutY="70.0" prefHeight="200.0" prefWidth="149.0">
                             <columns>
                                 <TableColumn prefWidth="75.0" text="Type 1"/>
-                                <TableColumn prefWidth="75.0" text="Type 2"/>
+                                <TableColumn fx:id="colWidgets" prefWidth="75.0" text="Widgets"/>
                             </columns>
                         </TableView>
                         <Button fx:id="btnAdd" layoutX="137.0" layoutY="192.0" mnemonicParsing="false"

@@ -1,10 +1,9 @@
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,6 +16,8 @@ public class Controller {
   @FXML private Button btnRecordProd;
   @FXML private ComboBox<Integer> cboQuantity;
   @FXML private ChoiceBox<ItemType> choType;
+  @FXML private TableColumn<?, ?> colWidgets;
+  @FXML private TableView<Product> tblProducts;
   /**
    * Two text boxes serve to take user input and (on button click) create a new database entry
    * with this information
@@ -37,6 +38,7 @@ public class Controller {
    * 11/2/19 and fills type combobox with valid type options from the enum ItemType
    */
   public void initialize() {
+    ObservableList<Widget> widgets = FXCollections.observableArrayList();
     for (int i = 1; i <= 10; i++) {
       cboQuantity.getItems().add(i);
     }
