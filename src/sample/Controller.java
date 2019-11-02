@@ -2,6 +2,7 @@ package sample;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -15,6 +16,7 @@ public class Controller {
   @FXML private Button btnAdd;
   @FXML private Button btnRecordProd;
   @FXML private ComboBox<Integer> cboQuantity;
+  @FXML private ChoiceBox<ItemType> choType;
   /**
    * Two text boxes serve to take user input and (on button click) create a new database entry
    * with this information
@@ -31,7 +33,8 @@ public class Controller {
   String sql;
 
   /**
-   * Initialize method fills combo box with 1-10 values and connects to the "prodDB" database
+   * Initialize method fills quantity combobox with 1-10 values and connects to the "prodDB" database
+   * 11/2/19 and fills type combobox with valid type options from the enum ItemType
    */
   public void initialize() {
     for (int i = 1; i <= 10; i++) {
@@ -39,6 +42,10 @@ public class Controller {
     }
     cboQuantity.setEditable(true);
     cboQuantity.getSelectionModel().selectFirst();
+    for (ItemType type : ItemType.values()) {
+      choType.getItems().add(type);
+    }
+    choType.getSelectionModel().selectFirst();
     try {
       Class.forName(JDBC_DRIVER);
     } catch (ClassNotFoundException e) {
@@ -59,8 +66,12 @@ public class Controller {
    */
   @FXML
   void AddProductClick(MouseEvent event) {
-    System.out.println("Product has been Added");
-    AddProduct();
+    if (txtManufacturer.getText().isEmpty() || txtName.getText().isEmpty()) {
+      System.out.println("ERROR - Values cannot be blank");
+    } else {
+      AddProduct();
+      System.out.println("Product has been Added");
+    }
   }
 
   @FXML
@@ -71,7 +82,7 @@ public class Controller {
   public void AddProduct() {
     try {
       sql =
-          "INSERT INTO PRODUCT (type, manufacturer, name) VALUES ( 'AUDIO', '"
+          "INSERT INTO PRODUCT (type, manufacturer, name) VALUES ( '"+choType.getValue()+"', '"
               + txtManufacturer.getText()
               + "', '"
               + txtName.getText()
