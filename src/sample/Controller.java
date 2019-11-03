@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Controller {
 
 //  @FXML private Button btnAdd;
-//  @FXML private Button btnRecordProd;
+  @FXML private Button btnRecordProd;
   @FXML private ComboBox<Integer> cboQuantity;
   @FXML private ChoiceBox<ItemType> choType;
   @FXML private TableColumn<?, ?> colWidgets;
@@ -25,9 +25,13 @@ public class Controller {
    * this information
    */
   @FXML private TextField txtName;
-
   @FXML private TextField txtManufacturer;
 
+  /**
+   * List/Text to add/record production events
+   */
+  @FXML private ListView<String> prodList;
+  @FXML private TextArea prodLog;
 
   /**
    * Observable list used to populate the table in Product Line and thus populate the list view in
@@ -49,7 +53,10 @@ public class Controller {
    * database 11/2/19 and fills type combobox with valid type options from the enum ItemType
    */
   public void initialize() {
-
+    /**
+     * Disable the button used to produce products until a product has been selected from the ListView control
+     */
+    btnRecordProd.disableProperty().bind(prodList.getSelectionModel().selectedItemProperty().isNull());
 
     colWidgets.setCellValueFactory(new PropertyValueFactory("name"));
     tblProducts.setItems(products);
@@ -75,7 +82,7 @@ public class Controller {
       ex.printStackTrace();
     }
     /**
-     * call statement to test multimedia audio/videoplayer functions (may or may not be commented out for testing)
+     * Call statement to test multimedia audio/videoplayer functions (may or may not be commented out for testing)
      */
     // testMultimedia();
   }
@@ -97,15 +104,22 @@ public class Controller {
 
   @FXML
   void RecordProduction(MouseEvent event) {
+    ProductionRecord newRecord = new ProductionRecord(0);
+    prodLog.appendText(newRecord.toString()+"\n");
     System.out.println("Production has been Recorded");
   }
 
+  /**
+   * AddProduct is called if the user enters valid product information and clicks the "add product" button; it creates
+   * a widget object for testing and attempts to add the information from that widget to the database, to the table in
+   * product line, and to the list view in the produce tab
+   */
   private void AddProduct() {
     Product pr =
         new Widget(
             txtName.getText(), txtManufacturer.getText(), String.valueOf(choType.getValue()));
     products.add(pr);
-
+    prodList.getItems().add(pr.getName());
     try {
       sql =
           "INSERT INTO PRODUCT (type, manufacturer, name) VALUES ( '"
