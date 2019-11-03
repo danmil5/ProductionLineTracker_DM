@@ -16,8 +16,12 @@ public class Controller {
   @FXML private Button btnRecordProd;
   @FXML private ComboBox<Integer> cboQuantity;
   @FXML private ChoiceBox<ItemType> choType;
-  @FXML private TableColumn<?, ?> colWidgets;
+  @FXML private TableColumn<?, ?> colName;
+  @FXML private TableColumn<?, ?> colManufacturer;
+  @FXML private TableColumn<?, ?> colType;
   @FXML private TableView<Product> tblProducts;
+  @FXML private Label lblQuantityError;
+  @FXML private Label lblBlankError;
   /**
    * Two text boxes serve to take user input and (on button click) create a new database entry with
    * this information
@@ -32,8 +36,8 @@ public class Controller {
   @FXML private TextArea prodLog;
 
   /**
-   * Part of Issue 6: Observable list used to populate the table in Product Line and thus populate the list view in
-   * the Produce tab
+   * Part of Issue 6: Observable list used to populate the table in Product Line and thus populate
+   * the list view in the Produce tab
    */
   private ObservableList<Product> products = FXCollections.observableArrayList();
 
@@ -60,9 +64,11 @@ public class Controller {
 
     /**
      * Part of Issue 6: Tell tblProducts to read from the observable list that is populated whenever
-     * the user enters a product
+     * the user enters a product for name, manufacturer, and type
      */
-    colWidgets.setCellValueFactory(new PropertyValueFactory("name"));
+    colName.setCellValueFactory(new PropertyValueFactory("name"));
+    colManufacturer.setCellValueFactory(new PropertyValueFactory("manufacturer"));
+    colType.setCellValueFactory(new PropertyValueFactory("type"));
     tblProducts.setItems(products);
 
     for (int i = 1; i <= 10; i++) {
@@ -96,29 +102,41 @@ public class Controller {
    * AddProductClick method tells the user that a product has been successfully added, then calls
    * the AddProduct method to create a new database entry with the information from the two text
    * boxes related to product name and product manufacturer
+   *
+   * @param event whenever the user clicks the "Add Product" button
    */
   @FXML
   void AddProductClick(MouseEvent event) {
     if (txtManufacturer.getText().isEmpty() || txtName.getText().isEmpty()) {
-      System.out.println("ERROR - Values cannot be blank");
+      lblBlankError.setText("ERROR - Values cannot be left blank");
     } else {
       AddProduct();
-      System.out.println("Product has been Added");
+      lblBlankError.setText("Product has been successfully added");
     }
   }
 
+  /**
+   * The RecordProduction method creates a ProductionRecord object for the type of object selected
+   * in the ListView, for however many times specified by the quantity selected or entered by the
+   * user, then appends the data collected from each of those objects' toString method into the
+   * production log
+   *
+   * @param event whenever the user clicks the "Record Production" button
+   */
   @FXML
   void RecordProduction(MouseEvent event) {
-    //    try {
-    //    sql = "SELECT id FROM PRODUCT WHERE NAME = iPod";
-    //    ResultSet rs = stmt.execute(sql);
-    //    } catch (SQLException e) {
-    //      e.printStackTrace();
-    //    }
-    ProductionRecord newRecord =
-        new ProductionRecord(products.get(prodList.getSelectionModel().getSelectedIndex()), 1);
-    prodLog.appendText(newRecord.toString() + "\n");
-    System.out.println("Production has been Recorded");
+    try {
+      for (int itemCount = 0;
+          itemCount < Integer.parseInt(String.valueOf(cboQuantity.getValue()));
+          itemCount++) {
+        ProductionRecord newRecord =
+            new ProductionRecord(products.get(prodList.getSelectionModel().getSelectedIndex()));
+        prodLog.appendText(newRecord.toString() + "\n");
+      }
+      lblQuantityError.setText("Production has been Recorded");
+    } catch (NumberFormatException nfe) {
+      lblQuantityError.setText("ERROR - Quantity must be numeric");
+    }
   }
 
   /**
@@ -130,9 +148,7 @@ public class Controller {
     Product pr =
         new Widget(
             txtName.getText(), txtManufacturer.getText(), String.valueOf(choType.getValue()));
-    /**
-     * Part of Issue 6: Populate observable list whenever the user enters a new product
-     */
+    /** Part of Issue 6: Populate observable list whenever the user enters a new product */
     products.add(pr);
     prodList.getItems().add(pr.getName());
     try {

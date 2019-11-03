@@ -3,10 +3,11 @@ package sample;
 import java.util.Date;
 
 /**
- * The "objects" created from the ProductionRecord class appear as printed statements in the production record tab
+ * The "objects" created from the ProductionRecord class appear as printed statements in the
+ * production record tab
  */
 public class ProductionRecord {
-  private int productionNumber;
+  private static int productionNumber = 0;
   private int productID;
   private String productName;
   private String serialNumber;
@@ -18,34 +19,36 @@ public class ProductionRecord {
 
   ProductionRecord(int productID) {
     this.productID = productID;
-    productionNumber = 0;
+    productionNumber = 1 + getProductionNumber();
     serialNumber = "0";
     dateProduced = new Date();
   }
 
-  ProductionRecord(Product p, int count) {
+  ProductionRecord(Product p) {
+    this.productID = p.getId();
     productName = p.name;
     String s1 = " ";
     s1 = p.manufacturer.substring(0, 3);
+    productionNumber = 1 + getProductionNumber();
 
     String s2 = "";
     String s3 = "";
     switch (p.type) {
       case "AUDIO":
         s2 = ItemType.AUDIO.getCode();
-        s3 = String.format("%05d" , ifAU++);
+        s3 = String.format("%05d", ifAU++);
         break;
       case "VISUAL":
         s2 = ItemType.VISUAL.getCode();
-        s3 = String.format("%05d" , ifVI++);
+        s3 = String.format("%05d", ifVI++);
         break;
       case "AUDIO_MOBILE":
         s2 = ItemType.AUDIO_MOBILE.getCode();
-        s3 = String.format("%05d" , ifAM++);
+        s3 = String.format("%05d", ifAM++);
         break;
       case "VISUAL_MOBILE":
         s2 = ItemType.VISUAL_MOBILE.getCode();
-        s3 = String.format("%05d" , ifVM++);
+        s3 = String.format("%05d", ifVM++);
         break;
     }
     serialNumber = s1 + s2 + s3;
@@ -53,7 +56,7 @@ public class ProductionRecord {
   }
 
   ProductionRecord(int productionNumber, int productID, String serialNumber) {
-    this.productionNumber = productionNumber;
+    this.productionNumber = 1 + getProductionNumber();
     this.productID = productID;
     this.serialNumber = serialNumber;
     dateProduced = new Date();
@@ -63,6 +66,8 @@ public class ProductionRecord {
   public String toString() {
     return "Prod. Num: "
         + productionNumber
+        + " Prod. ID: "
+        + productID
         + " Product Name: "
         + productName
         + " Serial Num: "
@@ -71,9 +76,7 @@ public class ProductionRecord {
         + dateProduced;
   }
 
-    /**
-     * Gets and sets for various information that should be recorded during production
-     */
+  /** Gets and sets for various information that should be recorded during production */
   public int getProductionNumber() {
     return productionNumber;
   }

@@ -1,12 +1,16 @@
 package sample;
 
 public abstract class Product implements Item {
-  private int id;
-  String type;
-  String manufacturer;
-  String name;
+  static private int productCount = 0;
+  private int id = 0;
+  protected String name;
+  protected String manufacturer;
+  protected String type;
+
+
 
   Product(String n, String m, String t) {
+    this.id = ++productCount;
     this.name = n;
     this.manufacturer = m;
     this.type = t;

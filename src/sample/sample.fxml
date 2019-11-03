@@ -45,16 +45,19 @@
                                            GridPane.rowIndex="2"/>
                             </children>
                         </GridPane>
-                        <Label layoutX="395.0" layoutY="30.0" text="Existing Products:"/>
-                        <TableView fx:id="tblProducts" layoutX="367.0" layoutY="70.0" prefHeight="200.0"
-                                   prefWidth="149.0">
+                        <Label layoutX="395.0" layoutY="30.0" text="Existing Products:     "
+                               style="-fx-font-weight:bold; -fx-font-size: 18"/>
+                        <TableView fx:id="tblProducts" layoutX="335.0" layoutY="70.0" prefHeight="250.0"
+                                   prefWidth="400.0">
                             <columns>
-                                <TableColumn prefWidth="75.0" text="Type 1"/>
-                                <TableColumn fx:id="colWidgets" prefWidth="75.0" text="Widgets"/>
+                                <TableColumn fx:id="colName" prefWidth="140.0" text="Name"/>
+                                <TableColumn fx:id="colManufacturer" prefWidth="140.0" text="Manufacturer"/>
+                                <TableColumn fx:id="colType" prefWidth="120.0" text="Type"/>
                             </columns>
                         </TableView>
                         <Button layoutX="137.0" layoutY="192.0" mnemonicParsing="false"
                                 onMouseClicked="#AddProductClick" text="Add Product"/>
+                        <Label fx:id="lblBlankError" layoutX="80.0" layoutY="245" prefWidth = "200"/>
                     </children>
                 </AnchorPane>
             </content>
@@ -68,6 +71,8 @@
                         <Label layoutX="398.0" layoutY="52.0" text="Choose Quantity:"/>
                         <ComboBox fx:id="cboQuantity" layoutX="369.0" layoutY="85.0" prefWidth="150.0"
                         />
+                        <Label fx:id="lblQuantityError" layoutX="370.0" layoutY="150.0" prefWidth="200.0"
+                        ></Label>
                         <Button fx:id="btnRecordProd" layoutX="243.0" layoutY="313.0" mnemonicParsing="false"
                                 onMouseClicked="#RecordProduction" text="Record Production"/>
                     </children>
@@ -78,7 +83,7 @@
             <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                     <children>
-                        <TextArea fx:id="prodLog" layoutX="74.0" layoutY="85.0" prefHeight="200.0" prefWidth="460.0"/>
+                        <TextArea fx:id="prodLog" layoutX="74.0" layoutY="85.0" prefHeight="200.0" prefWidth="600.0"/>
                     </children>
                 </AnchorPane>
             </content>
