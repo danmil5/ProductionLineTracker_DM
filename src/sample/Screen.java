@@ -4,9 +4,9 @@ package sample;
  * Screen object to be included in a new videoplayer object
  */
 public class Screen implements ScreenSpec {
-    String resolution;
-    int refreshRate;
-    int responseTime;
+    private String resolution;
+    private int refreshRate;
+    private int responseTime;
 
     Screen(String resolution, int refreshRate, int responseTime) {
         this.resolution = resolution;

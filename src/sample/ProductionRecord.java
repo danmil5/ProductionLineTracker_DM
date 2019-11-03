@@ -2,16 +2,19 @@ package sample;
 
 import java.util.Date;
 
+/**
+ * The "objects" created from the ProductionRecord class appear as printed statements in the production record tab
+ */
 public class ProductionRecord {
-  int productionNumber;
-  int productID;
-  String productName;
-  String serialNumber;
-  Date dateProduced;
-  static int ifAU = 00001;
-  static int ifVI = 25001;
-  static int ifAM = 50001;
-  static int ifVM = 75001;
+  private int productionNumber;
+  private int productID;
+  private String productName;
+  private String serialNumber;
+  private Date dateProduced;
+  private static int ifAU = 00001;
+  private static int ifVI = 25001;
+  private static int ifAM = 50001;
+  private static int ifVM = 75001;
 
   ProductionRecord(int productID) {
     this.productID = productID;
@@ -72,6 +75,9 @@ public class ProductionRecord {
         + dateProduced;
   }
 
+    /**
+     * Gets and sets for various information that should be recorded during production
+     */
   public int getProductionNumber() {
     return productionNumber;
   }

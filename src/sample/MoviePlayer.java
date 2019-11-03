@@ -4,8 +4,8 @@ package sample;
  * Movieplayer object extends from product to specfically support video-related functions
  */
 public class MoviePlayer extends Product implements MultimediaControl {
-  Screen screen;
-  MonitorType monitorType;
+  private Screen screen;
+  private MonitorType monitorType;
 
   MoviePlayer(String n, String m, Screen s, MonitorType mt) {
     super(n, m, "VISUAL");

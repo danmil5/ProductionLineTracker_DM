@@ -53,7 +53,7 @@
                                 <TableColumn fx:id="colWidgets" prefWidth="75.0" text="Widgets"/>
                             </columns>
                         </TableView>
-                        <Button fx:id="btnAdd" layoutX="137.0" layoutY="192.0" mnemonicParsing="false"
+                        <Button layoutX="137.0" layoutY="192.0" mnemonicParsing="false"
                                 onMouseClicked="#AddProductClick" text="Add Product"/>
                     </children>
                 </AnchorPane>

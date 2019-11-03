@@ -38,12 +38,12 @@ public class Controller {
   private ObservableList<Product> products = FXCollections.observableArrayList();
 
   /** Run Java database driver and prepare connection to the database "prodDB" */
-  static final String JDBC_DRIVER = "org.h2.Driver";
+  private static final String JDBC_DRIVER = "org.h2.Driver";
 
-  static final String DB_URL = "jdbc:h2:./res/prodDB";
-  Statement stmt;
-  Connection conn;
-  String sql;
+  private static final String DB_URL = "jdbc:h2:./res/prodDB";
+  private Statement stmt;
+  private Connection conn;
+  private String sql;
 
   /**
    * Initialize method fills quantity combobox with 1-10 values and connects to the "prodDB"
@@ -109,7 +109,6 @@ public class Controller {
 
   @FXML
   void RecordProduction(MouseEvent event) {
-    ;
     //    try {
     //    sql = "SELECT id FROM PRODUCT WHERE NAME = iPod";
     //    ResultSet rs = stmt.execute(sql);

@@ -1,7 +1,7 @@
 package sample;
 
 public abstract class Product implements Item {
-  int id;
+  private int id;
   String type;
   String manufacturer;
   String name;
