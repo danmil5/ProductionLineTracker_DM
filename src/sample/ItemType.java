@@ -7,9 +7,13 @@ public enum ItemType {
   AUDIO_MOBILE("AM"),
   VISUAL_MOBILE("VM");
 
-  public String code;
+  private String code;
 
   ItemType(String c) {
     this.code = c;
+  }
+
+  public String getCode() {
+    return code;
   }
 }

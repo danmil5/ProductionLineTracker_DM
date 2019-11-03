@@ -10,11 +10,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class Controller {
 
-  @FXML private Button btnAdd;
-  @FXML private Button btnRecordProd;
+//  @FXML private Button btnAdd;
+//  @FXML private Button btnRecordProd;
   @FXML private ComboBox<Integer> cboQuantity;
   @FXML private ChoiceBox<ItemType> choType;
   @FXML private TableColumn<?, ?> colWidgets;
@@ -26,25 +27,30 @@ public class Controller {
   @FXML private TextField txtName;
 
   @FXML private TextField txtManufacturer;
-  /** Run Java database driver and prepare connection to the database "prodDB" */
-  final String JDBC_DRIVER = "org.h2.Driver";
 
-  final String DB_URL = "jdbc:h2:./res/prodDB";
-  Statement stmt = null;
-  Connection conn = null;
-  String sql;
 
   /**
-   * Observable list used to populate the table in Product Line and thus populate the listview in
+   * Observable list used to populate the table in Product Line and thus populate the list view in
    * the Produce tab
    */
-  ObservableList<Product> products = FXCollections.observableArrayList();
+  private ObservableList<Product> products = FXCollections.observableArrayList();
+
+  /**
+   * Run Java database driver and prepare connection to the database "prodDB"
+   */
+  static final String JDBC_DRIVER = "org.h2.Driver";
+  static final String DB_URL = "jdbc:h2:./res/prodDB";
+  Statement stmt;
+  Connection conn;
+  String sql;
 
   /**
    * Initialize method fills quantity combobox with 1-10 values and connects to the "prodDB"
    * database 11/2/19 and fills type combobox with valid type options from the enum ItemType
    */
   public void initialize() {
+
+
     colWidgets.setCellValueFactory(new PropertyValueFactory("name"));
     tblProducts.setItems(products);
 
@@ -68,6 +74,10 @@ public class Controller {
     } catch (SQLException ex) {
       ex.printStackTrace();
     }
+    /**
+     * call statement to test multimedia audio/videoplayer functions (may or may not be commented out for testing)
+     */
+    // testMultimedia();
   }
 
   /**
@@ -90,7 +100,7 @@ public class Controller {
     System.out.println("Production has been Recorded");
   }
 
-  public void AddProduct() {
+  private void AddProduct() {
     Product pr =
         new Widget(
             txtName.getText(), txtManufacturer.getText(), String.valueOf(choType.getValue()));
@@ -112,6 +122,27 @@ public class Controller {
       }
     } catch (NullPointerException ex) {
       ex.printStackTrace();
+    }
+  }
+
+  /**
+   * Sample method to test multimedia audio/videoplayer functions (call statement in intialize may be commented out)
+   */
+  public static void testMultimedia() {
+    AudioPlayer newAudioProduct = new AudioPlayer("DP-X1A", "Onkyo",
+            "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC", "M3U/PLS/WPL");
+    Screen newScreen = new Screen("720x480", 40, 22);
+    MoviePlayer newMovieProduct = new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen,
+            MonitorType.LCD);
+    ArrayList<MultimediaControl> productList = new ArrayList<MultimediaControl>();
+    productList.add(newAudioProduct);
+    productList.add(newMovieProduct);
+    for (MultimediaControl p : productList) {
+      System.out.println(p);
+      p.play();
+      p.stop();
+      p.next();
+      p.previous();
     }
   }
 }

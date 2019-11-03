@@ -1,8 +1,10 @@
 package sample;
-
+/**
+ * Audioplayer object extends from product to specfically support audio-related functions
+ */
 public class AudioPlayer extends Product implements MultimediaControl {
-  String supportedAudioFormats;
-  String supportedPlaylistFormats;
+  private String supportedAudioFormats;
+  private String supportedPlaylistFormats;
 
   AudioPlayer(String n, String m, String supportedAudioFormats, String supportedPlaylistFormats) {
     super(n, m, "AUDIO");
