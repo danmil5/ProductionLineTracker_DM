@@ -6,15 +6,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+
+import java.sql.*;
 import java.util.ArrayList;
 
 public class Controller {
 
-//  @FXML private Button btnAdd;
+  //  @FXML private Button btnAdd;
   @FXML private Button btnRecordProd;
   @FXML private ComboBox<Integer> cboQuantity;
   @FXML private ChoiceBox<ItemType> choType;
@@ -25,24 +23,23 @@ public class Controller {
    * this information
    */
   @FXML private TextField txtName;
+
   @FXML private TextField txtManufacturer;
 
-  /**
-   * List/Text to add/record production events
-   */
+  /** List/Text to add/record production events */
   @FXML private ListView<String> prodList;
+
   @FXML private TextArea prodLog;
 
   /**
-   * Observable list used to populate the table in Product Line and thus populate the list view in
+   * Part of Issue 6: Observable list used to populate the table in Product Line and thus populate the list view in
    * the Produce tab
    */
   private ObservableList<Product> products = FXCollections.observableArrayList();
 
-  /**
-   * Run Java database driver and prepare connection to the database "prodDB"
-   */
+  /** Run Java database driver and prepare connection to the database "prodDB" */
   static final String JDBC_DRIVER = "org.h2.Driver";
+
   static final String DB_URL = "jdbc:h2:./res/prodDB";
   Statement stmt;
   Connection conn;
@@ -54,10 +51,17 @@ public class Controller {
    */
   public void initialize() {
     /**
-     * Disable the button used to produce products until a product has been selected from the ListView control
+     * Disable the button used to produce products until a product has been selected from the
+     * ListView control
      */
-    btnRecordProd.disableProperty().bind(prodList.getSelectionModel().selectedItemProperty().isNull());
+    btnRecordProd
+        .disableProperty()
+        .bind(prodList.getSelectionModel().selectedItemProperty().isNull());
 
+    /**
+     * Part of Issue 6: Tell tblProducts to read from the observable list that is populated whenever
+     * the user enters a product
+     */
     colWidgets.setCellValueFactory(new PropertyValueFactory("name"));
     tblProducts.setItems(products);
 
@@ -82,7 +86,8 @@ public class Controller {
       ex.printStackTrace();
     }
     /**
-     * Call statement to test multimedia audio/videoplayer functions (may or may not be commented out for testing)
+     * Call statement to test multimedia audio/videoplayer functions (may or may not be commented
+     * out for testing)
      */
     // testMultimedia();
   }
@@ -104,20 +109,31 @@ public class Controller {
 
   @FXML
   void RecordProduction(MouseEvent event) {
-    ProductionRecord newRecord = new ProductionRecord(0);
-    prodLog.appendText(newRecord.toString()+"\n");
+    ;
+    //    try {
+    //    sql = "SELECT id FROM PRODUCT WHERE NAME = iPod";
+    //    ResultSet rs = stmt.execute(sql);
+    //    } catch (SQLException e) {
+    //      e.printStackTrace();
+    //    }
+    ProductionRecord newRecord =
+        new ProductionRecord(products.get(prodList.getSelectionModel().getSelectedIndex()), 1);
+    prodLog.appendText(newRecord.toString() + "\n");
     System.out.println("Production has been Recorded");
   }
 
   /**
-   * AddProduct is called if the user enters valid product information and clicks the "add product" button; it creates
-   * a widget object for testing and attempts to add the information from that widget to the database, to the table in
-   * product line, and to the list view in the produce tab
+   * AddProduct is called if the user enters valid product information and clicks the "add product"
+   * button; it creates a widget object for testing and attempts to add the information from that
+   * widget to the database, to the table in product line, and to the list view in the produce tab
    */
   private void AddProduct() {
     Product pr =
         new Widget(
             txtName.getText(), txtManufacturer.getText(), String.valueOf(choType.getValue()));
+    /**
+     * Part of Issue 6: Populate observable list whenever the user enters a new product
+     */
     products.add(pr);
     prodList.getItems().add(pr.getName());
     try {
@@ -140,14 +156,16 @@ public class Controller {
   }
 
   /**
-   * Sample method to test multimedia audio/videoplayer functions (call statement in intialize may be commented out)
+   * Sample method to test multimedia audio/videoplayer functions (call statement in intialize may
+   * be commented out)
    */
   public static void testMultimedia() {
-    AudioPlayer newAudioProduct = new AudioPlayer("DP-X1A", "Onkyo",
-            "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC", "M3U/PLS/WPL");
+    AudioPlayer newAudioProduct =
+        new AudioPlayer(
+            "DP-X1A", "Onkyo", "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC", "M3U/PLS/WPL");
     Screen newScreen = new Screen("720x480", 40, 22);
-    MoviePlayer newMovieProduct = new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen,
-            MonitorType.LCD);
+    MoviePlayer newMovieProduct =
+        new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen, MonitorType.LCD);
     ArrayList<MultimediaControl> productList = new ArrayList<MultimediaControl>();
     productList.add(newAudioProduct);
     productList.add(newMovieProduct);

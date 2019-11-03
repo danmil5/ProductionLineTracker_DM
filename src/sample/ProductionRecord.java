@@ -5,13 +5,51 @@ import java.util.Date;
 public class ProductionRecord {
   int productionNumber;
   int productID;
+  String productName;
   String serialNumber;
   Date dateProduced;
+  static int ifAU = 00001;
+  static int ifVI = 25001;
+  static int ifAM = 50001;
+  static int ifVM = 75001;
 
   ProductionRecord(int productID) {
     this.productID = productID;
     productionNumber = 0;
     serialNumber = "0";
+    dateProduced = new Date();
+  }
+
+  ProductionRecord(Product p, int count) {
+    productName = p.name;
+    String s1 = " ";
+    if (p.manufacturer.charAt(2) == ' ') {
+      s1 = p.manufacturer.substring(0, 2);
+    } else {
+      s1 = p.manufacturer.substring(0, 3);
+    }
+
+    String s2 = "";
+    String s3 = "";
+    switch (p.type) {
+      case "AUDIO":
+        s2 = ItemType.AUDIO.getCode();
+        s3 = String.format("%05d" , ifAU++);
+        break;
+      case "VISUAL":
+        s2 = ItemType.VISUAL.getCode();
+        s3 = String.format("%05d" , ifVI++);
+        break;
+      case "AUDIO_MOBILE":
+        s2 = ItemType.AUDIO_MOBILE.getCode();
+        s3 = String.format("%05d" , ifAM++);
+        break;
+      case "VISUAL_MOBILE":
+        s2 = ItemType.VISUAL_MOBILE.getCode();
+        s3 = String.format("%05d" , ifVM++);
+        break;
+    }
+    serialNumber = s1 + s2 + s3;
     dateProduced = new Date();
   }
 
@@ -26,8 +64,8 @@ public class ProductionRecord {
   public String toString() {
     return "Prod. Num: "
         + productionNumber
-        + " Product ID: "
-        + productID
+        + " Product Name: "
+        + productName
         + " Serial Num: "
         + serialNumber
         + " Date: "
