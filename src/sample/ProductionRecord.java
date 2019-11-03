@@ -26,11 +26,7 @@ public class ProductionRecord {
   ProductionRecord(Product p, int count) {
     productName = p.name;
     String s1 = " ";
-    if (p.manufacturer.charAt(2) == ' ') {
-      s1 = p.manufacturer.substring(0, 2);
-    } else {
-      s1 = p.manufacturer.substring(0, 3);
-    }
+    s1 = p.manufacturer.substring(0, 3);
 
     String s2 = "";
     String s3 = "";
