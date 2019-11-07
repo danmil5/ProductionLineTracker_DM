@@ -12,10 +12,7 @@ public class ProductionRecord {
   private String productName;
   private String serialNumber;
   private Date dateProduced;
-  private static int ifAU = 00001;
-  private static int ifVI = 25001;
-  private static int ifAM = 50001;
-  private static int ifVM = 75001;
+  private static int runningSerial = 00001;
 
   ProductionRecord(int productID) {
     this.productID = productID;
@@ -29,6 +26,11 @@ public class ProductionRecord {
     productName = p.name;
     String s1 = " ";
     s1 = p.manufacturer.substring(0, 3);
+    for (int managerLetter = 0; managerLetter < 3; managerLetter++) {
+      if (s1.charAt(managerLetter) == ' ') {
+        // code here
+      }
+    }
     productionNumber = 1 + getProductionNumber();
 
     String s2 = "";
@@ -36,21 +38,18 @@ public class ProductionRecord {
     switch (p.type) {
       case "AUDIO":
         s2 = ItemType.AUDIO.getCode();
-        s3 = String.format("%05d", ifAU++);
         break;
       case "VISUAL":
         s2 = ItemType.VISUAL.getCode();
-        s3 = String.format("%05d", ifVI++);
         break;
       case "AUDIO_MOBILE":
         s2 = ItemType.AUDIO_MOBILE.getCode();
-        s3 = String.format("%05d", ifAM++);
         break;
       case "VISUAL_MOBILE":
         s2 = ItemType.VISUAL_MOBILE.getCode();
-        s3 = String.format("%05d", ifVM++);
         break;
     }
+    s3 = String.format("%05d", runningSerial++);
     serialNumber = s1 + s2 + s3;
     dateProduced = new Date();
   }
