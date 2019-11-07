@@ -26,11 +26,7 @@ public class ProductionRecord {
     productName = p.name;
     String s1 = " ";
     s1 = p.manufacturer.substring(0, 3);
-    for (int managerLetter = 0; managerLetter < 3; managerLetter++) {
-      if (s1.charAt(managerLetter) == ' ') {
-        // code here
-      }
-    }
+    s1 = s1.replaceAll(" ", "_");
     productionNumber = 1 + getProductionNumber();
 
     String s2 = "";
