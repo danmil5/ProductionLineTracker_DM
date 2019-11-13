@@ -1,7 +1,9 @@
 package sample;
 
 /**
- * Screen object to be included in a new videoplayer object
+ * Daniel Miller
+ * The class Screen contains the blueprint used to create screen objects, including their
+ * necessary fields and methods, that will eventually be used in MoviePlayer objects.
  */
 public class Screen implements ScreenSpec {
     private String resolution;

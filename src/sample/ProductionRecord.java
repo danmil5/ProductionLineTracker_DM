@@ -3,8 +3,18 @@ package sample;
 import java.util.Date;
 
 /**
- * The "objects" created from the ProductionRecord class appear as printed statements in the
- * production record tab
+ * Daniel Miller
+ * The ProductionRecord class serves to interpret the information in a product in such a way that
+ * it can be printed in a singular line to a text area. This text area will be seen by employees
+ * to monitor which types of products and how many of those types have been produced.
+ * productionNumber = Running total of all completed products
+ * productID = Corresponds to the order in which products were added and available for production
+ * productName = The name of the product being produced
+ * serialNumber = Separated into three different strings: s1, s2, and s3
+ * s1 = The first three characters in the product manufacturer's name
+ * s2 = The shorthand code for the product's item type from the ItemType enum assigned to it
+ * s3 = The total products produced, unique to each of the four item types
+ * dateProduced = The date and time when the product was produced
  */
 public class ProductionRecord {
   private static int productionNumber = 0;

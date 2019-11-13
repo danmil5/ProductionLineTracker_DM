@@ -1,8 +1,9 @@
 package sample;
 
 /**
- * Interface with sets and gets for common fields
- * among different types of products
+ * Daniel Miller
+ * The Item interface contains get and set methods that should be universally found in every
+ * product, and exists to be implemented by the Product class because of this.
  */
 interface Item {
     int getId();

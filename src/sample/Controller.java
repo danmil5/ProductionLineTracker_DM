@@ -1,12 +1,13 @@
 package sample;
 
+import java.io.FileInputStream;
+import java.util.Properties;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -48,6 +49,7 @@ public class Controller {
   private Statement stmt;
   private Connection conn;
   private String sql;
+  private String PASS;
 
   /**
    * Initialize method fills quantity combobox with 1-10 values and connects to the "prodDB"
@@ -80,17 +82,26 @@ public class Controller {
       choType.getItems().add(type);
     }
     choType.getSelectionModel().selectFirst();
+
+    try {
+      Properties prop = new Properties();
+      prop.load(new FileInputStream("res/properties"));
+      PASS = prop.getProperty("password");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     try {
       Class.forName(JDBC_DRIVER);
     } catch (ClassNotFoundException e) {
       e.printStackTrace();
     }
     try {
-      conn = DriverManager.getConnection(DB_URL);
+      conn = DriverManager.getConnection(DB_URL, "", PASS);
       stmt = conn.createStatement();
     } catch (SQLException ex) {
       ex.printStackTrace();
     }
+
     /**
      * Call statement to test multimedia audio/videoplayer functions (may or may not be commented
      * out for testing)
