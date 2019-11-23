@@ -81,7 +81,9 @@ public class ProductionRecord {
         + dateProduced;
   }
 
-  /** Gets and sets for various information that should be recorded during production */
+  /** Gets and sets for various information that should be recorded during production
+   * @return productionNumber returns the running production number value for the current product.
+   */
   public int getProductionNumber() {
     return productionNumber;
   }

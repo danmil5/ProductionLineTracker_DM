@@ -36,6 +36,10 @@ public abstract class Product implements Item {
   }
 
   /** methods implemented from the Item interface; includes gets/sets for name/manufacturer/id */
+  public void setProductCount(int pc) {
+    productCount = pc;
+  }
+
   @Override
   public int getId() {
     return id;

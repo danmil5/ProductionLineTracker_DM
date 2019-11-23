@@ -18,7 +18,7 @@
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
          prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.171"
-         xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+         xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller" fx:id="tabPane">
     <tabs>
         <Tab text="Product Line">
             <content>
@@ -45,7 +45,8 @@
                                            GridPane.rowIndex="2"/>
                             </children>
                         </GridPane>
-                        <Label layoutX="395.0" layoutY="30.0" text="Existing Products:     "
+                        <Label layoutX="132.0" layoutY="52.0" text="New Product:" style="-fx-font-weight:bold; -fx-font-size: 14"/>
+                        <Label layoutX="450.0" layoutY="30.0" text="Existing Products:     "
                                style="-fx-font-weight:bold; -fx-font-size: 18"/>
                         <TableView fx:id="tblProducts" layoutX="335.0" layoutY="70.0" prefHeight="250.0"
                                    prefWidth="400.0">
@@ -57,7 +58,7 @@
                         </TableView>
                         <Button layoutX="137.0" layoutY="192.0" mnemonicParsing="false"
                                 onMouseClicked="#AddProductClick" text="Add Product"/>
-                        <Label fx:id="lblBlankError" layoutX="80.0" layoutY="245" prefWidth = "200"/>
+                        <Label fx:id="lblBlankError" layoutX="76.0" layoutY="245" prefWidth="250"/>
                     </children>
                 </AnchorPane>
             </content>
@@ -66,24 +67,26 @@
             <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                     <children>
-                        <Label layoutX="137.0" layoutY="52.0" text="Choose Product:"/>
-                        <ListView fx:id="prodList" layoutX="79.0" layoutY="85.0" prefHeight="200.0" prefWidth="200.0"/>
-                        <Label layoutX="398.0" layoutY="52.0" text="Choose Quantity:"/>
-                        <ComboBox fx:id="cboQuantity" layoutX="369.0" layoutY="85.0" prefWidth="150.0"
+                        <Label layoutX="187.0" layoutY="52.0" text="Choose Product:" style="-fx-font-weight:bold; -fx-font-size: 14"/>
+                        <ListView fx:id="prodList" layoutX="100.0" layoutY="85.0" prefHeight="200.0" prefWidth="300.0"/>
+                        <Label layoutX="528.0" layoutY="52.0" text="Choose Quantity:" style="-fx-font-weight:bold; -fx-font-size: 14"/>
+                        <ComboBox fx:id="cboQuantity" layoutX="514.0" layoutY="85.0" prefWidth="150.0"
                         />
-                        <Label fx:id="lblQuantityError" layoutX="370.0" layoutY="150.0" prefWidth="200.0"
+                        <Label fx:id="lblQuantityError" layoutX="504.0" layoutY="180.0" prefWidth="250.0"
                         ></Label>
-                        <Button fx:id="btnRecordProd" layoutX="243.0" layoutY="313.0" mnemonicParsing="false"
+                        <Button fx:id="btnRecordProd" layoutX="340.0" layoutY="310.0"  mnemonicParsing="false"
                                 onMouseClicked="#RecordProduction" text="Record Production"/>
                     </children>
                 </AnchorPane>
             </content>
         </Tab>
-        <Tab text="Production Log">
+        <Tab fx:id="tbaProdLog" text="Production Log">
             <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                     <children>
-                        <TextArea fx:id="prodLog" layoutX="74.0" layoutY="85.0" prefHeight="200.0" prefWidth="600.0"/>
+                        <TextArea fx:id="prodLog" layoutX="60.0" layoutY="85.0" prefHeight="230.0" prefWidth="680.0"/>
+                        <Label fx:id="lblProdLog" layoutX="82.0" layoutY="30.0"
+                               style="-fx-font-weight:bold; -fx-font-size: 22"/>
                     </children>
                 </AnchorPane>
             </content>

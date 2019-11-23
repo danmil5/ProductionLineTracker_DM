@@ -2,18 +2,31 @@ package sample;
 
 import java.io.FileInputStream;
 import java.util.Properties;
+import javafx.animation.FadeTransition;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
+import java.sql.Timestamp;
+
+/** Daniel Miller
+ * Junior at Florida Gulf Coast University
+ * A Text-Based Production Line Simulator
+ */
 
 public class Controller {
 
-  //  @FXML private Button btnAdd;
+  /**
+   * Define common FXML components that will be populated with information to interact with the user
+   */
   @FXML private Button btnRecordProd;
   @FXML private ComboBox<Integer> cboQuantity;
   @FXML private ChoiceBox<ItemType> choType;
@@ -23,6 +36,8 @@ public class Controller {
   @FXML private TableView<Product> tblProducts;
   @FXML private Label lblQuantityError;
   @FXML private Label lblBlankError;
+  @FXML private Label lblProdLog;
+  @FXML private TabPane tabPane;
   /**
    * Two text boxes serve to take user input and (on button click) create a new database entry with
    * this information
@@ -41,8 +56,12 @@ public class Controller {
    * the list view in the Produce tab
    */
   private ObservableList<Product> products = FXCollections.observableArrayList();
+  /** Observable list to load in pre-existing products into the same table as the list above */
 
-  /** Run Java database driver and prepare connection to the database "prodDB" */
+  /**
+   * Run Java database driver and prepare connection to the database "prodDB" - Includes other
+   * variables used in database-related functions
+   */
   private static final String JDBC_DRIVER = "org.h2.Driver";
 
   private static final String DB_URL = "jdbc:h2:./res/prodDB";
@@ -50,12 +69,37 @@ public class Controller {
   private Connection conn;
   private String sql;
   private String PASS;
+  PreparedStatement ps;
+  PreparedStatement psNameFromID;
+  ResultSet rs;
+  ResultSet rsNameFromID;
+  String NameFromID;
+  String lastID;
+
+  /** Fade transitions for error and confirmation messages */
+  private FadeTransition fadeOutBlankError = new FadeTransition(Duration.millis(6000));
+  private FadeTransition fadeOutQuantityError = new FadeTransition(Duration.millis(6000));
 
   /**
    * Initialize method fills quantity combobox with 1-10 values and connects to the "prodDB"
    * database 11/2/19 and fills type combobox with valid type options from the enum ItemType
    */
   public void initialize() {
+    /**
+     * Assign the defined fade transition objects to the two labels that are used to present
+     * error/confirmation messages to the user, and set the specifics so that these labels fade out
+     * of view
+     */
+    fadeOutBlankError.setNode(lblBlankError);
+    fadeOutBlankError.setFromValue(1.0);
+    fadeOutBlankError.setToValue(0.0);
+    fadeOutBlankError.setCycleCount(1);
+    fadeOutBlankError.setAutoReverse(false);
+    fadeOutQuantityError.setNode(lblQuantityError);
+    fadeOutQuantityError.setFromValue(1.0);
+    fadeOutQuantityError.setToValue(0.0);
+    fadeOutQuantityError.setCycleCount(1);
+    fadeOutQuantityError.setAutoReverse(false);
     /**
      * Disable the button used to produce products until a product has been selected from the
      * ListView control
@@ -101,12 +145,75 @@ public class Controller {
     } catch (SQLException ex) {
       ex.printStackTrace();
     }
-
     /**
-     * Call statement to test multimedia audio/videoplayer functions (may or may not be commented
-     * out for testing)
+     * Get older products from the PRODUCT database table and add them to Product Line and
+     * Production tabs
      */
-    // testMultimedia();
+    try {
+      setupProductLineTable();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    /** Update the Production Log table */
+    try {
+      setupProductionLog();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    /**
+     * "Update" the Production Log table's "Last Updated" date whenever the user selects the
+     * Production Log tab to create a better user experience
+     */
+    tabPane
+        .getSelectionModel()
+        .selectedItemProperty()
+        .addListener(
+            (ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) -> {
+              if ("tbaProdLog".equals(newValue.getId())) {
+                lblProdLog.setText("Production Log - Last Updated "+new Date());
+              }
+            });
+  }
+
+  private void setupProductLineTable() throws SQLException {
+    sql = "SELECT * FROM PRODUCT";
+    PreparedStatement ps = conn.prepareStatement(sql);
+    rs = ps.executeQuery();
+    while (rs.next()) {
+      Product pr =
+          new Widget(rs.getString("NAME"), rs.getString("MANUFACTURER"), rs.getString("TYPE"));
+      products.add(pr);
+      prodList.getItems().add(pr.getName());
+    }
+  }
+
+  private void setupProductionLog() throws SQLException {
+    sql = "SELECT * FROM PRODUCTIONRECORD";
+    PreparedStatement ps = conn.prepareStatement(sql);
+    rs = ps.executeQuery();
+    while (rs.next()) {
+      /** Checking for consecutive id numbers reduces unneeded database searching */
+      if (rs.getString("PRODUCT_ID")!=lastID) {
+        sql = "SELECT NAME FROM PRODUCT WHERE ID='"+rs.getInt("PRODUCT_ID")+"'";
+        PreparedStatement psNameFromID = conn.prepareStatement(sql);
+        rsNameFromID = psNameFromID.executeQuery();
+        rsNameFromID.next();
+      }
+      lastID = rs.getString("PRODUCT_ID");
+      prodLog.appendText("Prod. Num: "
+              + rs.getString("PRODUCTION_NUM")
+              + " - Product Name: "
+              + rsNameFromID.getString(1)
+              + " - Serial Num: "
+              + rs.getString("SERIAL_NUM")
+              + " - Date: "
+              + rs.getString("DATE_PRODUCED") + "\n");
+
+
+    }
+
+
+    lblProdLog.setText("Production Log - Last Updated "+new Date());
   }
 
   /**
@@ -120,9 +227,13 @@ public class Controller {
   void AddProductClick(MouseEvent event) {
     if (txtManufacturer.getText().isEmpty() || txtName.getText().isEmpty()) {
       lblBlankError.setText("ERROR - Values cannot be left blank");
+      lblBlankError.setStyle("-fx-text-fill: red; -fx-font-weight: bold");
+      fadeOutBlankError.playFromStart();
     } else {
       AddProduct();
       lblBlankError.setText("Product has been successfully added");
+      lblBlankError.setStyle("-fx-text-fill: green; -fx-font-weight: bold");
+      fadeOutBlankError.playFromStart();
     }
   }
 
@@ -143,11 +254,28 @@ public class Controller {
         ProductionRecord newRecord =
             new ProductionRecord(products.get(prodList.getSelectionModel().getSelectedIndex()));
         prodLog.appendText(newRecord.toString() + "\n");
+        sql = "INSERT INTO PRODUCTIONRECORD (PRODUCT_ID, SERIAL_NUM, DATE_PRODUCED) VALUES ( '"
+                + newRecord.getProductID()
+                + "', '"
+                + newRecord.getSerialNumber()
+                + "', '"
+                + new Timestamp(newRecord.getDateProduced().getTime())
+                + "' )";
+        try {
+          stmt.execute(sql);
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
       }
       lblQuantityError.setText("Production has been Recorded");
+      lblQuantityError.setStyle("-fx-text-fill: green; -fx-font-weight: bold");
+      fadeOutQuantityError.playFromStart();
     } catch (NumberFormatException nfe) {
       lblQuantityError.setText("ERROR - Quantity must be numeric");
+      lblQuantityError.setStyle("-fx-text-fill: red; -fx-font-weight: bold");
+      fadeOutQuantityError.playFromStart();
     }
+    lblProdLog.setText("Production Log - Last Updated "+new Date());
   }
 
   /**
