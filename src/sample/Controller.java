@@ -16,7 +16,7 @@ import javafx.util.Duration;
 
 /**
  * @author Daniel Miller
- *     <p>A Text-Based Production Line Simulator.
+ *     <p>A Text-Based GUI Production Line Simulator.
  */
 public class Controller {
 
@@ -121,14 +121,17 @@ public class Controller {
       choType.getItems().add(type);
     }
     choType.getSelectionModel().selectFirst();
-
+    /* Issue 8: Read from a file to get the database password. */
     try {
       Properties prop = new Properties();
       prop.load(new FileInputStream("res/properties"));
       pass = prop.getProperty("password");
+      /* Issue 9: Call the reverseString method to decrypt the string to get the correct password */
+      pass = reverseString(pass);
     } catch (Exception e) {
       e.printStackTrace();
     }
+    /* Try to connect to the database, with an error alert if connection fails. */
     try {
       Class.forName(JDBC_DRIVER);
     } catch (ClassNotFoundException e) {
@@ -268,19 +271,19 @@ public class Controller {
     try {
       if (Integer.parseInt(String.valueOf(cboQuantity.getValue())) > 0) {
         for (int itemCount = 0;
-             itemCount < Integer.parseInt(String.valueOf(cboQuantity.getValue()));
-             itemCount++) {
+            itemCount < Integer.parseInt(String.valueOf(cboQuantity.getValue()));
+            itemCount++) {
           ProductionRecord newRecord =
-                  new ProductionRecord(products.get(prodList.getSelectionModel().getSelectedIndex()));
+              new ProductionRecord(products.get(prodList.getSelectionModel().getSelectedIndex()));
           prodLog.appendText(newRecord.toString() + "\n");
           sql =
-                  "INSERT INTO PRODUCTIONRECORD (PRODUCT_ID, SERIAL_NUM, DATE_PRODUCED) VALUES ( '"
-                          + newRecord.getProductID()
-                          + "', '"
-                          + newRecord.getSerialNumber()
-                          + "', '"
-                          + new Timestamp(newRecord.getDateProduced().getTime())
-                          + "' )";
+              "INSERT INTO PRODUCTIONRECORD (PRODUCT_ID, SERIAL_NUM, DATE_PRODUCED) VALUES ( '"
+                  + newRecord.getProductID()
+                  + "', '"
+                  + newRecord.getSerialNumber()
+                  + "', '"
+                  + new Timestamp(newRecord.getDateProduced().getTime())
+                  + "' )";
           try {
             stmt.execute(sql);
           } catch (SQLException e) {
@@ -291,8 +294,7 @@ public class Controller {
         lblQuantityError.setStyle("-fx-text-fill: green; -fx-font-weight: bold");
         fadeOutQuantityError.playFromStart();
         lblProdLog.setText("Production Log - Last Updated " + new Date());
-      }
-      else {
+      } else {
         lblQuantityError.setText("ERROR - Quantity Must Be Greater Than Zero");
         lblQuantityError.setStyle("-fx-text-fill: red; -fx-font-weight: bold");
         fadeOutQuantityError.playFromStart();
@@ -302,7 +304,6 @@ public class Controller {
       lblQuantityError.setStyle("-fx-text-fill: red; -fx-font-weight: bold");
       fadeOutQuantityError.playFromStart();
     }
-
   }
 
   /**
@@ -334,5 +335,21 @@ public class Controller {
     } catch (NullPointerException ex) {
       ex.printStackTrace();
     }
+  }
+
+  /**
+   * The method reverseString is called during the initialize method when the database password is
+   * being prepared to decrypt information in the form of a string from the properties file to
+   * retrieve the correct database password.
+   *
+   * @param pw is string to be decrypted.
+   * @return the decrypted string.
+   */
+  public String reverseString(String pw) {
+    StringBuilder reversed = new StringBuilder();
+    for (int i = pw.length(); i > 0; i--) {
+      reversed.append(pw.charAt(i - 1));
+    }
+    return reversed.toString();
   }
 }

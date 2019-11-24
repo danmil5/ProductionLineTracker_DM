@@ -33,8 +33,9 @@ public class ProductionRecord {
     this.productID = p.getId();
     productName = p.name;
     String s1 = "";
-    /* Substring the first three characters of the manufacturer's name to add to the serial number, but add leading
-       spaces if the manufacturer's name is less than three characters, then replace all spaces with underscores.
+    /* Substring the first three characters of the manufacturer's name to add to the serial number,
+    but add leading spaces if the manufacturer's name is less than three characters, then
+    replace all spaces with underscores.
      */
     try {
       s1 = p.manufacturer.substring(0, 3);
@@ -85,8 +86,9 @@ public class ProductionRecord {
     return productionNumber;
   }
 
-  public void setProductionNumber(int productionNumber) {
-    this.productionNumber = productionNumber;
+  public static void setProductionNumber(String productionNumber) {
+    /* Accepts a string to lower time spent parsing to an int while database info is extracted. */
+    ProductionRecord.productionNumber = Integer.parseInt(productionNumber);
   }
 
   public int getProductID() {
@@ -130,9 +132,5 @@ public class ProductionRecord {
 
   public static void setVmSerial(String vmSerial) {
     ProductionRecord.vmSerial = Integer.parseInt(vmSerial);
-  }
-
-  public static void setProductionNumber(String productionNumber) {
-    ProductionRecord.productionNumber = Integer.parseInt(productionNumber);
   }
 }
