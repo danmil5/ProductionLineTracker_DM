@@ -22,14 +22,10 @@ public class ProductionRecord {
   private String productName;
   private String serialNumber;
   private Date dateProduced;
-  private static int runningSerial = 00001;
-
-  ProductionRecord(int productID) {
-    this.productID = productID;
-    productionNumber = 1 + getProductionNumber();
-    serialNumber = "0";
-    dateProduced = new Date();
-  }
+  private static int AUSerial = 00000;
+  private static int VISerial = 00000;
+  private static int AMSerial = 00000;
+  private static int VMSerial = 00000;
 
   ProductionRecord(Product p) {
     this.productID = p.getId();
@@ -44,26 +40,22 @@ public class ProductionRecord {
     switch (p.type) {
       case "AUDIO":
         s2 = ItemType.AUDIO.getCode();
+        s3 = String.format("%05d", ++AUSerial);
         break;
       case "VISUAL":
         s2 = ItemType.VISUAL.getCode();
+        s3 = String.format("%05d", ++VISerial);
         break;
       case "AUDIO_MOBILE":
         s2 = ItemType.AUDIO_MOBILE.getCode();
+        s3 = String.format("%05d", ++AMSerial);
         break;
       case "VISUAL_MOBILE":
         s2 = ItemType.VISUAL_MOBILE.getCode();
+        s3 = String.format("%05d", ++VMSerial);
         break;
     }
-    s3 = String.format("%05d", runningSerial++);
     serialNumber = s1 + s2 + s3;
-    dateProduced = new Date();
-  }
-
-  ProductionRecord(int productionNumber, int productID, String serialNumber) {
-    this.productionNumber = 1 + getProductionNumber();
-    this.productID = productID;
-    this.serialNumber = serialNumber;
     dateProduced = new Date();
   }
 
@@ -71,8 +63,6 @@ public class ProductionRecord {
   public String toString() {
     return "Prod. Num: "
         + productionNumber
-        + " Prod. ID: "
-        + productID
         + " Product Name: "
         + productName
         + " Serial Num: "
@@ -114,5 +104,25 @@ public class ProductionRecord {
 
   public void setDateProduced(Date dateProduced) {
     this.dateProduced = dateProduced;
+  }
+
+  /**
+   * These four set methods are called upon program startup to keep an accurate running total of
+   * each of the four types of products that can be created.
+   *
+   * <p>The parameter XXSerial is the highest number derived from the last 5 characters amongst
+   * every serial number of type XX that are searched and appended to the Production Log at startup.
+   */
+  public static void setAUSerial(String AUSerial) {
+    ProductionRecord.AUSerial = Integer.parseInt(AUSerial);
+  }
+  public static void setVISerial(String VISerial) {
+    ProductionRecord.VISerial = Integer.parseInt(VISerial);
+  }
+  public static void setAMSerial(String AMSerial) {
+    ProductionRecord.AMSerial = Integer.parseInt(AMSerial);
+  }
+  public static void setVMSerial(String VMSerial) {
+    ProductionRecord.VMSerial = Integer.parseInt(VMSerial);
   }
 }

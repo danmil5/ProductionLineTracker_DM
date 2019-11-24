@@ -17,17 +17,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.sql.Timestamp;
 
-/** Daniel Miller
- * Junior at Florida Gulf Coast University
- * A Text-Based Production Line Simulator
- */
-
+/** Daniel Miller Junior at Florida Gulf Coast University A Text-Based Production Line Simulator */
 public class Controller {
 
   /**
    * Define common FXML components that will be populated with information to interact with the user
    */
   @FXML private Button btnRecordProd;
+
   @FXML private ComboBox<Integer> cboQuantity;
   @FXML private ChoiceBox<ItemType> choType;
   @FXML private TableColumn<?, ?> colName;
@@ -78,6 +75,7 @@ public class Controller {
 
   /** Fade transitions for error and confirmation messages */
   private FadeTransition fadeOutBlankError = new FadeTransition(Duration.millis(6000));
+
   private FadeTransition fadeOutQuantityError = new FadeTransition(Duration.millis(6000));
 
   /**
@@ -170,7 +168,7 @@ public class Controller {
         .addListener(
             (ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) -> {
               if ("tbaProdLog".equals(newValue.getId())) {
-                lblProdLog.setText("Production Log - Last Updated "+new Date());
+                lblProdLog.setText("Production Log - Last Updated " + new Date());
               }
             });
   }
@@ -193,27 +191,46 @@ public class Controller {
     rs = ps.executeQuery();
     while (rs.next()) {
       /** Checking for consecutive id numbers reduces unneeded database searching */
-      if (rs.getString("PRODUCT_ID")!=lastID) {
-        sql = "SELECT NAME FROM PRODUCT WHERE ID='"+rs.getInt("PRODUCT_ID")+"'";
+      if (rs.getString("PRODUCT_ID") != lastID) {
+        sql = "SELECT NAME FROM PRODUCT WHERE ID='" + rs.getInt("PRODUCT_ID") + "'";
         PreparedStatement psNameFromID = conn.prepareStatement(sql);
         rsNameFromID = psNameFromID.executeQuery();
         rsNameFromID.next();
       }
       lastID = rs.getString("PRODUCT_ID");
-      prodLog.appendText("Prod. Num: "
+      prodLog.appendText(
+          "Prod. Num: "
               + rs.getString("PRODUCTION_NUM")
               + " - Product Name: "
               + rsNameFromID.getString(1)
               + " - Serial Num: "
               + rs.getString("SERIAL_NUM")
               + " - Date: "
-              + rs.getString("DATE_PRODUCED") + "\n");
-
-
+              + rs.getString("DATE_PRODUCED")
+              + "\n");
+      /**
+       * Searches each serial number for its type, then sets the running total 5-digit serial number
+       * code to whatever the highest 5-digit code is for each type among pre-existing logs at
+       * startup.
+       */
+      if (rs.getString("SERIAL_NUM").substring(3, 5).equals("AU")) {
+        ProductionRecord.setAUSerial(
+            rs.getString("SERIAL_NUM").substring(rs.getString("SERIAL_NUM").length() - 5));
+      }
+      if (rs.getString("SERIAL_NUM").substring(3, 5).equals("VI")) {
+        ProductionRecord.setVISerial(
+            rs.getString("SERIAL_NUM").substring(rs.getString("SERIAL_NUM").length() - 5));
+      }
+      if (rs.getString("SERIAL_NUM").substring(3, 5).equals("AM")) {
+        ProductionRecord.setAMSerial(
+            rs.getString("SERIAL_NUM").substring(rs.getString("SERIAL_NUM").length() - 5));
+      }
+      if (rs.getString("SERIAL_NUM").substring(3, 5).equals("VM")) {
+        ProductionRecord.setVMSerial(
+            rs.getString("SERIAL_NUM").substring(rs.getString("SERIAL_NUM").length() - 5));
+      }
     }
-
-
-    lblProdLog.setText("Production Log - Last Updated "+new Date());
+    lblProdLog.setText("Production Log - Last Updated " + new Date());
   }
 
   /**
@@ -254,7 +271,8 @@ public class Controller {
         ProductionRecord newRecord =
             new ProductionRecord(products.get(prodList.getSelectionModel().getSelectedIndex()));
         prodLog.appendText(newRecord.toString() + "\n");
-        sql = "INSERT INTO PRODUCTIONRECORD (PRODUCT_ID, SERIAL_NUM, DATE_PRODUCED) VALUES ( '"
+        sql =
+            "INSERT INTO PRODUCTIONRECORD (PRODUCT_ID, SERIAL_NUM, DATE_PRODUCED) VALUES ( '"
                 + newRecord.getProductID()
                 + "', '"
                 + newRecord.getSerialNumber()
@@ -275,7 +293,7 @@ public class Controller {
       lblQuantityError.setStyle("-fx-text-fill: red; -fx-font-weight: bold");
       fadeOutQuantityError.playFromStart();
     }
-    lblProdLog.setText("Production Log - Last Updated "+new Date());
+    lblProdLog.setText("Production Log - Last Updated " + new Date());
   }
 
   /**
