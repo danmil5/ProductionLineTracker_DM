@@ -57,7 +57,7 @@
                             </columns>
                         </TableView>
                         <Button layoutX="137.0" layoutY="192.0" mnemonicParsing="false"
-                                onMouseClicked="#AddProductClick" text="Add Product"/>
+                                onMouseClicked="#addProductClick" text="Add Product"/>
                         <Label fx:id="lblBlankError" layoutX="76.0" layoutY="245" prefWidth="250"/>
                     </children>
                 </AnchorPane>
@@ -75,7 +75,7 @@
                         <Label fx:id="lblQuantityError" layoutX="504.0" layoutY="180.0" prefWidth="250.0"
                         ></Label>
                         <Button fx:id="btnRecordProd" layoutX="340.0" layoutY="310.0"  mnemonicParsing="false"
-                                onMouseClicked="#RecordProduction" text="Record Production"/>
+                                onMouseClicked="#recordProduction" text="Record Production"/>
                     </children>
                 </AnchorPane>
             </content>

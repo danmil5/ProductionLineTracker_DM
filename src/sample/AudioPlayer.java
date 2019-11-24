@@ -1,10 +1,10 @@
 package sample;
 
 /**
- * Daniel Miller
- * The AudioPlayer class is an extension of the Product class. It serves all of the intended
- * functions that the product class serves, and also has extra implementations such as extra and
- * overridden methods to specifically support audio-related functions.
+ * @author Daniel Miller
+ *     <p>The AudioPlayer class is an extension of the Product class. It serves all of the intended
+ *     functions that the product class serves, and also has extra implementations such as extra and
+ *     overridden methods to specifically support audio-related functions.
  */
 public class AudioPlayer extends Product implements MultimediaControl {
   private String supportedAudioFormats;

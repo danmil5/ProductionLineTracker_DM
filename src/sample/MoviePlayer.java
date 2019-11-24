@@ -1,10 +1,10 @@
 package sample;
 
 /**
- * Daniel Miller
- * The MoviePlayer class is an extension of the Product class. It serves all of the intended
- * functions that the product class serves, and also has extra implementations such as extra and
- * overridden methods to specifically support movie-related functions.
+ * @author Daniel Miller
+ *     <p>The MoviePlayer class is an extension of the Product class. It serves all of the intended
+ *     functions that the product class serves, and also has extra implementations such as extra and
+ *     overridden methods to specifically support movie-related functions.
  */
 public class MoviePlayer extends Product implements MultimediaControl {
   private Screen screen;

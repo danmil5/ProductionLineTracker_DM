@@ -1,15 +1,15 @@
 package sample;
 
 /**
- * Daniel Miller
- * The Product class is what every single product produced by this program is derived from.
- * Because of this, the product class is designed to be abstract because it does not contain
- * the additional fields and methods required to set a product apart from other products.
- * The product class also implements the Item interface, which contains methods that should be
- * available for use in all products such as common get and set methods.
+ * @author Daniel Miller
+ *     <p>The Product class is what every single product produced by this program is derived from.
+ *     Because of this, the product class is designed to be abstract because it does not contain the
+ *     additional fields and methods required to set a product apart from other products. The
+ *     product class also implements the Item interface, which contains methods that should be
+ *     available for use in all products such as common get and set methods.
  */
 public abstract class Product implements Item {
-  static private int productCount = 0;
+  private static int productCount = 0;
   private int id = 0;
   protected String name;
   protected String manufacturer;
@@ -35,7 +35,6 @@ public abstract class Product implements Item {
     return "Name: " + name + "\nManufacturer: " + manufacturer + "\nType: " + type;
   }
 
-  /** methods implemented from the Item interface; includes gets/sets for name/manufacturer/id */
   public void setProductCount(int pc) {
     productCount = pc;
   }
