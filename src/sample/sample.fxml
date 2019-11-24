@@ -72,7 +72,7 @@
                         <Label layoutX="528.0" layoutY="52.0" text="Choose Quantity:" style="-fx-font-weight:bold; -fx-font-size: 14"/>
                         <ComboBox fx:id="cboQuantity" layoutX="514.0" layoutY="85.0" prefWidth="150.0"
                         />
-                        <Label fx:id="lblQuantityError" layoutX="504.0" layoutY="180.0" prefWidth="250.0"
+                        <Label fx:id="lblQuantityError" layoutX="494.0" layoutY="180.0" prefWidth="300.0"
                         ></Label>
                         <Button fx:id="btnRecordProd" layoutX="340.0" layoutY="310.0"  mnemonicParsing="false"
                                 onMouseClicked="#recordProduction" text="Record Production"/>

@@ -67,6 +67,7 @@ public class Controller {
   ResultSet rs;
   ResultSet rsNameFromID;
   String lastID;
+  Alert badConnection = new Alert(Alert.AlertType.ERROR, "Could Not Connect to Database");
 
   /* Fade transitions for error and confirmation messages. */
   private FadeTransition fadeOutBlankError = new FadeTransition(Duration.millis(6000));
@@ -138,6 +139,8 @@ public class Controller {
       stmt = conn.createStatement();
     } catch (SQLException ex) {
       ex.printStackTrace();
+      badConnection.setHeaderText("Database Error");
+      badConnection.showAndWait();
     }
     /*
      * Get older products from the PRODUCT database table and add them to Product Line and
@@ -179,6 +182,7 @@ public class Controller {
       products.add(pr);
       prodList.getItems().add(pr.getName());
     }
+    ps.close();
   }
 
   private void setupProductionLog() throws SQLException {
@@ -225,6 +229,7 @@ public class Controller {
         ProductionRecord.setVmSerial(
             rs.getString("SERIAL_NUM").substring(rs.getString("SERIAL_NUM").length() - 5));
       }
+      ProductionRecord.setProductionNumber(rs.getString("PRODUCTION_NUM"));
     }
     lblProdLog.setText("Production Log - Last Updated " + new Date());
   }
@@ -239,12 +244,12 @@ public class Controller {
   @FXML
   void addProductClick(MouseEvent event) {
     if (txtManufacturer.getText().isEmpty() || txtName.getText().isEmpty()) {
-      lblBlankError.setText("ERROR - Values cannot be left blank");
+      lblBlankError.setText("ERROR - Values Cannot Be Left Blank");
       lblBlankError.setStyle("-fx-text-fill: red; -fx-font-weight: bold");
       fadeOutBlankError.playFromStart();
     } else {
       addProduct();
-      lblBlankError.setText("Product has been successfully added");
+      lblBlankError.setText("Product Has Been Successfully Added!");
       lblBlankError.setStyle("-fx-text-fill: green; -fx-font-weight: bold");
       fadeOutBlankError.playFromStart();
     }
@@ -261,35 +266,43 @@ public class Controller {
   @FXML
   void recordProduction(MouseEvent event) {
     try {
-      for (int itemCount = 0;
-          itemCount < Integer.parseInt(String.valueOf(cboQuantity.getValue()));
-          itemCount++) {
-        ProductionRecord newRecord =
-            new ProductionRecord(products.get(prodList.getSelectionModel().getSelectedIndex()));
-        prodLog.appendText(newRecord.toString() + "\n");
-        sql =
-            "INSERT INTO PRODUCTIONRECORD (PRODUCT_ID, SERIAL_NUM, DATE_PRODUCED) VALUES ( '"
-                + newRecord.getProductID()
-                + "', '"
-                + newRecord.getSerialNumber()
-                + "', '"
-                + new Timestamp(newRecord.getDateProduced().getTime())
-                + "' )";
-        try {
-          stmt.execute(sql);
-        } catch (SQLException e) {
-          e.printStackTrace();
+      if (Integer.parseInt(String.valueOf(cboQuantity.getValue())) > 0) {
+        for (int itemCount = 0;
+             itemCount < Integer.parseInt(String.valueOf(cboQuantity.getValue()));
+             itemCount++) {
+          ProductionRecord newRecord =
+                  new ProductionRecord(products.get(prodList.getSelectionModel().getSelectedIndex()));
+          prodLog.appendText(newRecord.toString() + "\n");
+          sql =
+                  "INSERT INTO PRODUCTIONRECORD (PRODUCT_ID, SERIAL_NUM, DATE_PRODUCED) VALUES ( '"
+                          + newRecord.getProductID()
+                          + "', '"
+                          + newRecord.getSerialNumber()
+                          + "', '"
+                          + new Timestamp(newRecord.getDateProduced().getTime())
+                          + "' )";
+          try {
+            stmt.execute(sql);
+          } catch (SQLException e) {
+            e.printStackTrace();
+          }
         }
+        lblQuantityError.setText("Production Has Been Recorded!");
+        lblQuantityError.setStyle("-fx-text-fill: green; -fx-font-weight: bold");
+        fadeOutQuantityError.playFromStart();
+        lblProdLog.setText("Production Log - Last Updated " + new Date());
       }
-      lblQuantityError.setText("Production has been Recorded");
-      lblQuantityError.setStyle("-fx-text-fill: green; -fx-font-weight: bold");
-      fadeOutQuantityError.playFromStart();
-    } catch (NumberFormatException nfe) {
-      lblQuantityError.setText("ERROR - Quantity must be numeric");
+      else {
+        lblQuantityError.setText("ERROR - Quantity Must Be Greater Than Zero");
+        lblQuantityError.setStyle("-fx-text-fill: red; -fx-font-weight: bold");
+        fadeOutQuantityError.playFromStart();
+      }
+    } catch (NumberFormatException e) {
+      lblQuantityError.setText("ERROR - Quantity Must Be Numeric");
       lblQuantityError.setStyle("-fx-text-fill: red; -fx-font-weight: bold");
       fadeOutQuantityError.playFromStart();
     }
-    lblProdLog.setText("Production Log - Last Updated " + new Date());
+
   }
 
   /**

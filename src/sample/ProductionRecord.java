@@ -1,5 +1,6 @@
 package sample;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -31,8 +32,15 @@ public class ProductionRecord {
   ProductionRecord(Product p) {
     this.productID = p.getId();
     productName = p.name;
-    String s1 = " ";
-    s1 = p.manufacturer.substring(0, 3);
+    String s1 = "";
+    /* Substring the first three characters of the manufacturer's name to add to the serial number, but add leading
+       spaces if the manufacturer's name is less than three characters, then replace all spaces with underscores.
+     */
+    try {
+      s1 = p.manufacturer.substring(0, 3);
+    } catch (Exception e) {
+      s1 = String.format("%3s", p.manufacturer);
+    }
     s1 = s1.replaceAll(" ", "_");
     productionNumber = 1 + getProductionNumber();
 
@@ -70,7 +78,7 @@ public class ProductionRecord {
         + " Serial Num: "
         + serialNumber
         + " Date: "
-        + dateProduced;
+        + new Timestamp(dateProduced.getTime());
   }
 
   public int getProductionNumber() {
@@ -98,11 +106,7 @@ public class ProductionRecord {
   }
 
   public Date getDateProduced() {
-    return dateProduced;
-  }
-
-  public void setDateProduced(Date dateProduced) {
-    this.dateProduced = dateProduced;
+    return (Date) dateProduced.clone();
   }
 
   /*
@@ -126,5 +130,9 @@ public class ProductionRecord {
 
   public static void setVmSerial(String vmSerial) {
     ProductionRecord.vmSerial = Integer.parseInt(vmSerial);
+  }
+
+  public static void setProductionNumber(String productionNumber) {
+    ProductionRecord.productionNumber = Integer.parseInt(productionNumber);
   }
 }
